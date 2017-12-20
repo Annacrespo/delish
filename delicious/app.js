@@ -24,6 +24,7 @@ app.set('view engine', 'pug'); // we use the engine pug, mustache or EJS work gr
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Takes the raw requests and turns them into usable properties on req.body
+// middleware before we hit routes express will check url and check if anyone has posted and put data in request to allow easy access
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
