@@ -7,8 +7,14 @@ router.get('/', (req, res, next) => {
   // res.send('Hey! It works!');
   // res.json(anna);
   // res.send(req.query.name);
-  res.json(req.query);
-  //req.query
+  // res.json(req.query);
+  // req.query
+  res.render('hello', {
+    name: 'Wes',
+    dog: req.query.dog,
+    title: 'I love food'
+  }); //views/hello.pug
+
 });
 
 router.get('/reverse/:name', (req, res)=> {

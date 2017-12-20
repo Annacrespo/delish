@@ -52,6 +52,7 @@ app.use(passport.session());
 app.use(flash());
 
 // pass variables to our templates + all requests
+// on every request put the info in locals and every render
 app.use((req, res, next) => {
   res.locals.h = helpers;
   res.locals.flashes = req.flash();
