@@ -1,8 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const storeController = require('../controllers/storeController');
-
-// Do work here
+const { catchErrors } = require('../handlers/errorHandlers');
 /*
 router.get('/', (req, res, next) => {
   const anna = { name: 'Anna', age: 100, cool: true};
@@ -18,9 +17,10 @@ router.get('/', (req, res, next) => {
   }); //views/hello.pug
 });
 */
-router.get('/', storeController.homePage);
+router.get('/', storeController.getStores);
+router.get('/stores', storeController.getStores);
 router.get('/add', storeController.addStore);
-router.post('/add', storeController.createStore);
+router.post('/add', catchErrors(storeController.createStore));
 
 
 
