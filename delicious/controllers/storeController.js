@@ -37,6 +37,8 @@ exports.updateStore = async(req, res) => {
     //find and update the store
     //findOneAndUpdate takes in 3 parameters query, data, and options
     //pass over req.body object with every form field
+    //set location data to be a point
+    req.body.location.type = 'Point';
     const store = await Store.findOneAndUpdate({_id: req.params.id }, req.body, 
         {
             new:true, 
@@ -46,6 +48,4 @@ exports.updateStore = async(req, res) => {
     req.flash('success', `Successfully updated <strong>${store.name}</strong>. <a href="/stores/${store.slug}">View Store -></a>`);
     res.redirect(`/stores/${store.id}/edit`);
     //redirect to store and alert if worked
-
-
 }
