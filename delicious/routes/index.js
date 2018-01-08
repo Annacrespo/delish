@@ -40,4 +40,6 @@ router.get('/reverse/:name', (req, res)=> {
   res.send(reverse);
 });
 
+router.get('/store/:slug', (storeController.getStoreBySlug));
+
 module.exports = router;
