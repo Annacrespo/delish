@@ -35,10 +35,10 @@ router.post('/add/:id',
 router.get('/stores/:id/edit', catchErrors(storeController.editStore));
 
 
-router.get('/reverse/:name', (req, res)=> {
-  const reverse = [...req.params.name].reverse().join('');
-  res.send(reverse);
-});
+// router.get('/reverse/:name', (req, res)=> {
+//   const reverse = [...req.params.name].reverse().join('');
+//   res.send(reverse);
+// });
 
 router.get('/stores/:slug', catchErrors(storeController.getStoreBySlug));
 
