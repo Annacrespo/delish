@@ -85,14 +85,11 @@ exports.updateStore = async(req, res) => {
 }
 //use multer to upload the file and gimp to resize the file
 
-exports.getStoreBySlug = async(req, res) => {
+exports.getStoreBySlug = async(req, res, next) => {
     //query database
-    const store = await store.findOne({ slug: req.params.slug });
-    res.json(store);
+    // res.send('It works!');
+    const store = await Store.findOne({ slug: req.params.slug });
 
-    // if(!store) {
-    //     return;
-    //     next();
-    // }
-    // res.json(store);
+    if(!store) return next();
+    res.render('store', {store, title: store.name});
 };
