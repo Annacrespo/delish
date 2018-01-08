@@ -87,7 +87,6 @@ exports.updateStore = async(req, res) => {
 
 exports.getStoreBySlug = async(req, res, next) => {
     //query database
-    // res.send('It works!');
     const store = await Store.findOne({ slug: req.params.slug });
 
     if(!store) return next();
@@ -95,8 +94,13 @@ exports.getStoreBySlug = async(req, res, next) => {
 };
 
 exports.getStoresByTag = async(req, res) => {
-    const tags = await Store.getTagsList();
-    //create a static method that lives on store model
     const tag = req.params.tag;
-    res.render('tags', { tags , title: 'Tags', tag })
+    const tagQuery = tag || {$exists: true};
+    const tagsPromise = Store.getTagsList();
+    const storePromise = Store.find({ tags: tagQuery})
+    //find all of the store tag properties
+    const [tags, stores] = await Promise.all([tagsPromise, storePromise]);
+    //use Promise.all and await all from returning
+
+    res.render('tags', { tags , title: 'Tags', tag, stores});
 }
