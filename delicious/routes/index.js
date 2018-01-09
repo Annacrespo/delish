@@ -3,6 +3,7 @@ const router = express.Router();
 const storeController = require('../controllers/storeController');
 const { catchErrors } = require('../handlers/errorHandlers');
 const userController = require('../controllers/userController');
+const authController = require('../controllers/authController');
 /*
 router.get('/', (req, res, next) => {
   const anna = { name: 'Anna', age: 100, cool: true};
@@ -53,5 +54,10 @@ router.get('/register', userController.registerForm);
 //register user
 //login user
 
-router.post('/register', userController.validateRegister);
+router.post('/register', 
+  userController.validateRegister,
+  userController.register,
+  authController.login
+);
+
 module.exports = router;

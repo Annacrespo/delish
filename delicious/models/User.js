@@ -3,12 +3,12 @@ const Schema = mongoose.Schema;
 mongoose.Promise = global.Promise; //tells to use es6 promise in each model to supress error of deprecated promise
 const md5 = require('md5');
 const validator = require('validator');
-const mongodbErrorHandler = require('mongoose-db-errors');
-const passportLocalMongoose = require('password-local-mongoose');
+const mongodbErrorHandler = require('mongoose-mongodb-errors');
+const passportLocalMongoose = require('passport-local-mongoose');
 
 //model is what data will look like
 
-const userSchema = newSchema ({
+const userSchema = new mongoose.Schema ({
     email: {
         type: String,
         unique: true,
