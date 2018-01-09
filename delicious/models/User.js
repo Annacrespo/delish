@@ -17,11 +17,20 @@ const userSchema = newSchema ({
         validate: [
             validator.isEmail,
             'Invalid Email Address'
-        ]
+        ],
+        required: 'Please supply email address'
     },
     name: {
-
+        type: String,
+        required: 'Please supply a name',
+        trim: true
     }
 });
+
+userSchema.plugin(passportLocalMongoose, {usernameField: 'email' });
+//adds methods and fields needed for authentication for schema, email is login field
+userSchema.plugin(mongodbErrorHandler);
+//simplifies errors
+
 
 module.exports = mongoose.model('User', userSchema)
