@@ -27,6 +27,11 @@ const userSchema = new mongoose.Schema ({
     }
 });
 
+userSchema.virtual('gravatar').get(function(){
+    const hash = md5(this.email);
+    return `https://gravatar.com/avatar/${hash}?s=200`;
+});
+
 userSchema.plugin(passportLocalMongoose, {usernameField: 'email' });
 //adds methods and fields needed for authentication for schema, email is login field
 userSchema.plugin(mongodbErrorHandler);
