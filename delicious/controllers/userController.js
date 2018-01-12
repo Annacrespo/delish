@@ -43,4 +43,23 @@ exports.register = async(req, res, next) => {
     //using promisify library when used on object you need to pass obj so it knows where to find it
     await register(user, req.body.password);
     next(); //pass to authController.login
-}
+};
+
+exports.account = (req, res) => {
+    res.render('account', { title: 'Edit your account' });
+};
+
+exports.updateAccount = async(req, res) => {
+    const updates = {
+        name: req.body.name,
+        email: req.body.email
+    };
+
+    const user = await User.findOneAndUpdate( 
+        {_id: req.user._id}, //query
+        { $set:updates }, //update
+        { new: true, runValidators: true, context: 'query' } //options
+    );
+    req.flash('success', 'You\'ve successfully updated your account!');
+    res.redirect('back');
+};
