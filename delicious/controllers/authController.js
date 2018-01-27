@@ -28,7 +28,7 @@ exports.isLoggedIn = (req, res, next) => {
     res.redirect('/login');
 }
 
-exports.forgot = (req, res) => {
+exports.forgot = async(req, res) => {
     //check if user's email exists
     //send reset token and expiration
     //send email with token
@@ -39,7 +39,6 @@ exports.forgot = (req, res) => {
         req.flash('error', 'Password reset has been emailed to you');
         return res.redirect('/login');
     }
-
     user.resetPasswordToken = crypto.randomBytes(20).toString('hex');
     user.resetPasswordExpires = Date.now() + 360000; //1 hour from now
     await user.save();

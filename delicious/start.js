@@ -23,4 +23,4 @@ const server = app.listen(app.get('port'), () => {
 });
 
 //TEMP SEND EMAIL
-// require('./handlers/mail');
+require('./handlers/mail');
