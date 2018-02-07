@@ -47,7 +47,7 @@ exports.forgot = async(req, res) => {
     user.resetPasswordExpires = Date.now() + 360000; //1 hour from now
     await user.save();
     //send them an email on the token
-    const resetURL = `http://${req.headers.host}/account/reset/${userResetPasswordToken}`;
+    const resetURL = `http://${req.headers.host}/account/reset/${user.resetPasswordToken}`;
     await mail.send({
         user,
         subject: 'Password Reset',
