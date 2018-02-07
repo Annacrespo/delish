@@ -35,7 +35,7 @@ exports.resize = async(req, res, next) => {
     }
     const extension = req.file.mimetype.split('/')[1];
     req.body.photo = `${uuid.v4()}.${extension}`;
-    //now we resize
+    //now we resize 
     const photo = await jimp.read(req.file.buffer);
     await photo.resize(800, jimp.AUTO);
     await photo.write(`./public/uploads/${req.body.photo}`);
@@ -44,6 +44,7 @@ exports.resize = async(req, res, next) => {
 }
 
 exports.createStore = async (req, res) => {
+    req.body.author = req.user._id; //takes the id of the current user and puts in the author field
     const store = await (new Store(req.body)).save();
     req.flash('success', `Successfully created ${store.name}. Care to leave a review?`);
     //success, warning, or info
@@ -87,7 +88,7 @@ exports.updateStore = async(req, res) => {
 
 exports.getStoreBySlug = async(req, res, next) => {
     //query database
-    const store = await Store.findOne({ slug: req.params.slug });
+    const store = await Store.findOne({ slug: req.params.slug }).populate('author');
 
     if(!store) return next();
     res.render('store', {store, title: store.name});
