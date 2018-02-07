@@ -2,6 +2,9 @@ const passport = require('passport');
 const crypto = require('crypto');
 const mongoose = require('mongoose');
 const User = mongoose.model('User');
+const mail = require('../handlers/mail');
+
+
 
 exports.login = passport.authenticate('local', {
     failureRedirect: '/login',
@@ -39,8 +42,19 @@ exports.forgot = async(req, res) => {
         req.flash('error', 'Password reset has been emailed to you');
         return res.redirect('/login');
     }
+    //set reset tokens with expiry
     user.resetPasswordToken = crypto.randomBytes(20).toString('hex');
     user.resetPasswordExpires = Date.now() + 360000; //1 hour from now
     await user.save();
-    
+    //send them an email on the token
+    const resetURL = `http://${req.headers.host}/account/reset/${userResetPasswordToken}`;
+    await mail.send({
+        user,
+        subject: 'Password Reset',
+        resetURL,
+        filename: 'password-reset' //add filename property when html is rendered it will look for password-reset pug file
+    });
+    req.flash('success', 'You have been emailed a password reset link!');
+    //redirect to login
+    res.redirect('/login');
 }

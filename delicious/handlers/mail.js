@@ -9,7 +9,19 @@ const transport = nodemailer.createTransport ({
     port: process.env.MAIL_PORT,
     auth: {
         user: process.env.MAIL_USER,
-        password: process.env.MAIL_PASS
+        pass: process.env.MAIL_PASS
     }
 });
 
+//forgot password function
+exports.send = async(options) => {
+    const mailOptions = {
+        from: 'Anna <noreply@gmail.com>',
+        to: options.user.email,
+        subject: options.subject,
+        html: 'tbd',
+        test: 'tbd'
+    };
+    const sendMail = promisify(transport.sendMail, transport);
+    return sendMail(mailOptions);
+}
