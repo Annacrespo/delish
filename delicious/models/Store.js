@@ -43,6 +43,11 @@ const storeSchema = new mongoose.Schema({
     }
 
 });
+//define our indexes
+storeSchema.index({
+    name: 'text',
+    description: 'text'
+});
 
 // set slug to slug input save will not happen until store is saved only runs when name is changed
 storeSchema.pre('save', async function(next){

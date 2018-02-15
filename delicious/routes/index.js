@@ -58,4 +58,8 @@ router.post('/account/forgot',
   catchErrors(authController.forgot)
 );
 
+router.get('/api/v1/search', 
+  catchErrors(storeController.searchStores)
+);
+
 module.exports = router;
