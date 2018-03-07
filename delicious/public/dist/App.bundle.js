@@ -1001,7 +1001,7 @@ function typeAhead(search) {
 
         //use axios to get endpoint
         console.log(this.value);
-        axios.get('/api/search?q=' + this.value).then(function (res) {
+        axios.get('/api/v1/search?q=' + this.value).then(function (res) {
             console.log("hiii");
         });
     });

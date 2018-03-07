@@ -1,29 +1,45 @@
-const axios = require('axios');
+import axios from 'axios';
+import dompurify from 'dompurify';
+
+function searchResultsHTML(stores) {
+  return stores.map(store => {
+    return `
+      <a href="/store/${store.slug}" class="search__result">
+        <strong>${store.name}</strong>
+      </a>
+    `;
+  }).join('');
+}
 
 function typeAhead(search) {
-    if (!search) return; //if no search is on the page do not run the function
-    //need input and results
-    const searchInput = search.querySelector('input[name="search"]');
-    const searchResults = search.querySelector('.search__results');
+  if (!search) return;
 
-    searchInput.on('input', function(){
-        if(!this.value) {
-            //if no value hide the search results
-            searchResults.style.display = 'none';
-            return;
-        }
-    //show the search results!
-    searchResults.style.display = 'block';    
-    
-    //use axios to get endpoint
-        console.log(this.value);
+  const searchInput = search.querySelector('input[name="search"]');
+  const searchResults = search.querySelector('.search__results');
+
+  searchInput.on('input', function() {
+    // if there is no value, quit it!
+    if (!this.value) {
+      searchResults.style.display = 'none';
+      return; // stop!
+    }
+
+    // show the search results!
+    searchResults.style.display = 'block';
+
     axios
-        .get(`/api/search?q=${this.value}`)
-        .then(res => {
-            console.log("hiii");
-        
-        });
-    });
-};
+      .get(`/api/v1/search?q=${this.value}`)
+      .then(res => {
+        if (res.data.length) {
+          searchResults.innerHTML = dompurify.sanitize(searchResultsHTML(res.data));
+          return;
+        }
+        // tell them nothing came back
+        searchResults.innerHTML = dompurify.sanitize(`<div class="search__result">No results for ${this.value}</div>`);
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  });
 
 export default typeAhead;
