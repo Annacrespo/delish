@@ -41,5 +41,6 @@ function typeAhead(search) {
         console.error(err);
       });
   });
+}
 
 export default typeAhead;
