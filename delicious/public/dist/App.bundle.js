@@ -995,7 +995,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function searchResultsHTML(stores) {
   return stores.map(function (store) {
-    return '\n      <a href="/store/' + store.slug + '" class="search__result">\n        <strong>' + store.name + '</strong>\n      </a>\n    ';
+    return '\n      <a href="/stores/' + store.slug + '" class="search__result">\n        <strong>' + store.name + '</strong>\n      </a>\n    ';
   }).join('');
 }
 
@@ -1027,6 +1027,43 @@ function typeAhead(search) {
     }).catch(function (err) {
       console.error(err);
     });
+  });
+  //handle keyboard inputs
+  searchInput.on('keyup', function (e) {
+    //if they aren't pressing up, down, or enter skip it
+    if (![38, 40, 13].includes(e.keyCode)) {
+      return;
+    }
+    //allows you to use arrow keys to navigate through search results
+    //active class
+    var activeClass = 'search__result--active';
+    var current = search.querySelector('.' + activeClass);
+    var items = search.querySelectorAll('.search__result');
+    //if someone presses down or up which one will be the next one
+    var next = void 0;
+    if (e.keyCode === 40 && current) {
+      //if down is pressed and there is a current one selected then the next one will turn into the current one
+      next = current.nextElementSibling || items[0];
+    } else if (e.keyCode === 40) {
+      //if down is pressed and there is no current search result is selected the next one will be the first one
+      next = items[0];
+    } else if (e.keyCode === 38 && current) {
+      //if up arrow is pressed and it is at the first search result go to the last search result
+      next = current.previousElementSibling || items[items.length - 1];
+    } else if (e.keyCode === 38) {
+      //if up is pressed the next will be the last one
+      next = items[items.length - 1];
+    } else if (e.keyCode === 13 && current.href) {
+      //if enter is selected and there is a current search result take them to that page
+      window.location = current.href;
+      return;
+    }
+    //add the active class and remove
+    if (current) {
+      current.classList.remove(activeClass);
+    }{
+      next.classList.add(activeClass);
+    }
   });
 }
 
