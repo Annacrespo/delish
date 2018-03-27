@@ -1021,9 +1021,12 @@ function typeAhead(search) {
       if (res.data.length) {
         searchResults.innerHTML = _dompurify2.default.sanitize(searchResultsHTML(res.data));
         return;
+      } else {
+
+        // tell them nothing came back use dompurify library to prevent any javascript
+        // inside html search results
+        searchResults.innerHTML = _dompurify2.default.sanitize('<div class="search__result">No results for ' + _this.value + '</div>');
       }
-      // tell them nothing came back
-      searchResults.innerHTML = _dompurify2.default.sanitize('<div class="search__result">No results for ' + _this.value + '</div>');
     }).catch(function (err) {
       console.error(err);
     });
@@ -1034,34 +1037,38 @@ function typeAhead(search) {
     if (![38, 40, 13].includes(e.keyCode)) {
       return;
     }
-    //allows you to use arrow keys to navigate through search results
-    //active class
+    //allows you to use arrow keys to navigate through search results active class
     var activeClass = 'search__result--active';
     var current = search.querySelector('.' + activeClass);
     var items = search.querySelectorAll('.search__result');
     //if someone presses down or up which one will be the next one
     var next = void 0;
     if (e.keyCode === 40 && current) {
-      //if down is pressed and there is a current one selected then the next one will turn into the current one
+      // if down is pressed and there is a current one selected then the next one will
+      // turn into the current one
       next = current.nextElementSibling || items[0];
     } else if (e.keyCode === 40) {
-      //if down is pressed and there is no current search result is selected the next one will be the first one
+      // if down is pressed and there is no current search result is selected the next
+      // one will be the first one
       next = items[0];
     } else if (e.keyCode === 38 && current) {
-      //if up arrow is pressed and it is at the first search result go to the last search result
+      // if up arrow is pressed and it is at the first search result go to the last
+      // search result
       next = current.previousElementSibling || items[items.length - 1];
     } else if (e.keyCode === 38) {
       //if up is pressed the next will be the last one
       next = items[items.length - 1];
     } else if (e.keyCode === 13 && current.href) {
-      //if enter is selected and there is a current search result take them to that page
+      // if enter is selected and there is a current search result take them to that
+      // page
       window.location = current.href;
       return;
     }
-    //add the active class and remove
+    //add the active class and deselects
     if (current) {
       current.classList.remove(activeClass);
-    }{
+    }
+    {
       next.classList.add(activeClass);
     }
   });

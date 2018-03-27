@@ -49,6 +49,9 @@ storeSchema.index({
     description: 'text'
 });
 
+//geospatial meta data and be able to quickly search
+storeSchema.index({ location: '2dsphere' });
+
 // set slug to slug input save will not happen until store is saved only runs when name is changed
 storeSchema.pre('save', async function(next){
     if (!this.isModified('name')) {
