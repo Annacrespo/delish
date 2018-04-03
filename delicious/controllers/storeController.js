@@ -15,6 +15,7 @@ const multerOptions = {
 //multer will handle the upload request and where to photo will be placed and type
 const jimp = require('jimp'); //allows manipulation of image
 const uuid = require('uuid'); // creates unique identifiers
+
 exports.homePage = (req, res) => {
     res.render('index'); //render index.js
 }
@@ -141,10 +142,14 @@ exports.searchStores = async (req, res) => {
                       type: 'Point',
                       coordinates
                   },
-                  $maxDistance: 10000 //10km
+                //   $maxDistance: 10000 //10km
               }
           }
       };
       const stores = await Store.find(q).select('slug name description location').limit(10);
       res.json(stores);
+  };
+
+  exports.mapPage = async (req, res) => {
+    res.render('map', {title: 'Map'});
   };

@@ -66,4 +66,7 @@ router.get('/api/stores/near',
   catchErrors(storeController.mapStores)
 );
 
+router.get('/map', storeController.mapPage
+);
+
 module.exports = router;
