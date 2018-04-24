@@ -150,6 +150,6 @@ exports.searchStores = async (req, res) => {
       res.json(stores);
   };
 
-  exports.mapPage = async (req, res) => {
+  exports.mapPage = (req, res) => {
     res.render('map', {title: 'Map'});
   };
